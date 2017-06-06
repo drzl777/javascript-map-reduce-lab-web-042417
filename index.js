@@ -9007,3 +9007,34 @@ var issuesWithUpdatedApiUrl = issues.map(function(issue){
     "url": issue.url.replace('api.github.com','api-v2.github.com')
   })
 })
+
+var commentCountAcrossIssues = issues.map(function(issue){return issue.comments_count}).reduce(function(sum, additive){
+  return sum + additive
+}, 0)
+
+var openIssues = issues.filter(function(issue){
+  if (issue.state === "open") {
+    return true
+  }
+  else {
+    return false
+  }
+})
+
+
+
+var nonAutomaticIssues = issues.filter(function(issue){
+  if (issue.body === "This pull request has been automatically created by learn.co.") {
+    return false
+  }
+  else {
+    return true
+  }
+})
+
+var showOffTable = nonAutomaticIssues.map(function(issue){
+  var row = `<tr> <td>${issue.body}</td> <td> ${issue.created_at} </td> <td> ${issue.state} </td>  </tr>`
+  return row
+})
+
+document.getElementById("results").innerHTML = showOffTable.join()
